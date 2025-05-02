@@ -19,4 +19,11 @@ public class HabitsController : ControllerBase
         _context = context;
     }
 
+    private int GetCurrentUserId()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+            throw new UnauthorizedAccessException("User ID not found in token");
+        return int.Parse(userIdClaim.Value);
+    }
 } 
