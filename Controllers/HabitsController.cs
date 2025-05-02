@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MinimalApi.Data;
 using MinimalApi.DTOs;
 using MinimalApi.Models;
 using MinimalApi.Services;
+using System.Security.Claims;
 
 namespace MinimalApi.Controllers;
 
