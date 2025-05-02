@@ -52,4 +52,18 @@ public class HabitsController : ControllerBase
             .Include(h => h.Entries)
             .ToListAsync();
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Habit>> GetHabit(int id)
+    {
+        var userId = GetCurrentUserId();
+        var habit = await _context.Habits
+            .Include(h => h.Entries)
+            .FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
+
+        if (habit == null)
+            return NotFound();
+
+        return habit;
+    }
 } 
