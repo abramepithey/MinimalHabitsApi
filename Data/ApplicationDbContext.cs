@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MinimalApi.Models;
 
 namespace MinimalApi.Data;
 
@@ -29,5 +30,14 @@ public class ApplicationDbContext : DbContext
             .WithMany(h => h.Entries)
             .HasForeignKey(he => he.HabitId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Configure indexes
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Username)
+            .IsUnique();
+
+        modelBuilder.Entity<HabitEntry>()
+            .HasIndex(he => new { he.HabitId, he.Date })
+            .IsUnique();
     }
 } 
