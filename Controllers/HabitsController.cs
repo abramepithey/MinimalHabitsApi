@@ -42,4 +42,14 @@ public class HabitsController : ControllerBase
 
         return CreatedAtAction(nameof(GetHabit), new { id = habit.Id }, habit);
     }
+
+    [HttpGet]
+    public async Task<ActionResult<List<Habit>>> GetHabits()
+    {
+        var userId = GetCurrentUserId();
+        return await _context.Habits
+            .Where(h => h.UserId == userId)
+            .Include(h => h.Entries)
+            .ToListAsync();
+    }
 } 
