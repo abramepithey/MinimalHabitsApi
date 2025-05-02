@@ -82,4 +82,20 @@ public class HabitsController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteHabit(int id)
+    {
+        var userId = GetCurrentUserId();
+        var habit = await _context.Habits
+            .FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
+
+        if (habit == null)
+            return NotFound();
+
+        _context.Habits.Remove(habit);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
 } 
