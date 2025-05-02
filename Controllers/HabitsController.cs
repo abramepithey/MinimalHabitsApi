@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MinimalApi.Data;
 using MinimalApi.DTOs;
 using MinimalApi.Models;
+using MinimalApi.Services;
 
 namespace MinimalApi.Controllers;
 
@@ -12,11 +12,11 @@ namespace MinimalApi.Controllers;
 [Route("api/[controller]")]
 public class HabitsController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly HabitService _habitService;
 
-    public HabitsController(ApplicationDbContext context)
+    public HabitsController(HabitService habitService)
     {
-        _context = context;
+        _habitService = habitService;
     }
 
     private int GetCurrentUserId()
@@ -31,15 +31,7 @@ public class HabitsController : ControllerBase
     public async Task<ActionResult<Habit>> CreateHabit(HabitDto habitDto)
     {
         var userId = GetCurrentUserId();
-        var habit = new Habit
-        {
-            Name = habitDto.Name,
-            UserId = userId
-        };
-
-        _context.Habits.Add(habit);
-        await _context.SaveChangesAsync();
-
+        var habit = await _habitService.CreateHabitAsync(userId, habitDto);
         return CreatedAtAction(nameof(GetHabit), new { id = habit.Id }, habit);
     }
 
@@ -47,23 +39,16 @@ public class HabitsController : ControllerBase
     public async Task<ActionResult<List<Habit>>> GetHabits()
     {
         var userId = GetCurrentUserId();
-        return await _context.Habits
-            .Where(h => h.UserId == userId)
-            .Include(h => h.Entries)
-            .ToListAsync();
+        return await _habitService.GetUserHabitsAsync(userId);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Habit>> GetHabit(int id)
     {
         var userId = GetCurrentUserId();
-        var habit = await _context.Habits
-            .Include(h => h.Entries)
-            .FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
-
+        var habit = await _habitService.GetHabitAsync(userId, id);
         if (habit == null)
             return NotFound();
-
         return habit;
     }
 
@@ -71,15 +56,9 @@ public class HabitsController : ControllerBase
     public async Task<IActionResult> UpdateHabit(int id, HabitDto habitDto)
     {
         var userId = GetCurrentUserId();
-        var habit = await _context.Habits
-            .FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
-
-        if (habit == null)
+        var success = await _habitService.UpdateHabitAsync(userId, id, habitDto);
+        if (!success)
             return NotFound();
-
-        habit.Name = habitDto.Name;
-        await _context.SaveChangesAsync();
-
         return NoContent();
     }
 
@@ -87,15 +66,9 @@ public class HabitsController : ControllerBase
     public async Task<IActionResult> DeleteHabit(int id)
     {
         var userId = GetCurrentUserId();
-        var habit = await _context.Habits
-            .FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
-
-        if (habit == null)
+        var success = await _habitService.DeleteHabitAsync(userId, id);
+        if (!success)
             return NotFound();
-
-        _context.Habits.Remove(habit);
-        await _context.SaveChangesAsync();
-
         return NoContent();
     }
 
@@ -103,22 +76,9 @@ public class HabitsController : ControllerBase
     public async Task<ActionResult<HabitEntry>> AddHabitEntry(int habitId, HabitEntryDto entryDto)
     {
         var userId = GetCurrentUserId();
-        var habit = await _context.Habits
-            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId);
-
-        if (habit == null)
+        var entry = await _habitService.AddHabitEntryAsync(userId, habitId, entryDto);
+        if (entry == null)
             return NotFound("Habit not found");
-
-        var entry = new HabitEntry
-        {
-            Date = entryDto.Date,
-            Completed = entryDto.Completed,
-            HabitId = habitId
-        };
-
-        _context.HabitEntries.Add(entry);
-        await _context.SaveChangesAsync();
-
         return CreatedAtAction(nameof(GetHabit), new { id = habitId }, entry);
     }
 
@@ -126,15 +86,9 @@ public class HabitsController : ControllerBase
     public async Task<ActionResult<List<HabitEntry>>> GetHabitEntries(int habitId)
     {
         var userId = GetCurrentUserId();
-        var habit = await _context.Habits
-            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId);
-
-        if (habit == null)
+        var entries = await _habitService.GetHabitEntriesAsync(userId, habitId);
+        if (entries.Count == 0)
             return NotFound("Habit not found");
-
-        return await _context.HabitEntries
-            .Where(he => he.HabitId == habitId)
-            .OrderBy(he => he.Date)
-            .ToListAsync();
+        return entries;
     }
 } 
