@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MinimalApi.Data;
-using MinimalApi.DTOs;
-using MinimalApi.Models;
-using MinimalApi.Services;
+using MinimalHabitsApi.Data;
+using MinimalHabitsApi.DTOs;
+using MinimalHabitsApi.Models;
+using MinimalHabitsApi.Services;
 using System.Security.Claims;
 
-namespace MinimalApi.Controllers;
+namespace MinimalHabitsApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

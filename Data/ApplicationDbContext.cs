@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using MinimalApi.Models;
+using MinimalHabitsApi.Models;
 
-namespace MinimalApi.Data;
+namespace MinimalHabitsApi.Data;
 
 public class ApplicationDbContext : DbContext
 {

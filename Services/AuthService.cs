@@ -3,9 +3,9 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using MinimalApi.Models;
+using MinimalHabitsApi.Models;
 
-namespace MinimalApi.Services;
+namespace MinimalHabitsApi.Services;
 
 public class AuthService
 {

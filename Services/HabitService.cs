@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using MinimalApi.Data;
-using MinimalApi.DTOs;
-using MinimalApi.Models;
+using MinimalHabitsApi.Data;
+using MinimalHabitsApi.DTOs;
+using MinimalHabitsApi.Models;
 
-namespace MinimalApi.Services;
+namespace MinimalHabitsApi.Services;
 
 public class HabitService
 {
