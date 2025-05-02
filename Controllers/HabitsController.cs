@@ -66,4 +66,20 @@ public class HabitsController : ControllerBase
 
         return habit;
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateHabit(int id, HabitDto habitDto)
+    {
+        var userId = GetCurrentUserId();
+        var habit = await _context.Habits
+            .FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
+
+        if (habit == null)
+            return NotFound();
+
+        habit.Name = habitDto.Name;
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
 } 
