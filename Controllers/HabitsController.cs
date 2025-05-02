@@ -26,4 +26,20 @@ public class HabitsController : ControllerBase
             throw new UnauthorizedAccessException("User ID not found in token");
         return int.Parse(userIdClaim.Value);
     }
+
+    [HttpPost]
+    public async Task<ActionResult<Habit>> CreateHabit(HabitDto habitDto)
+    {
+        var userId = GetCurrentUserId();
+        var habit = new Habit
+        {
+            Name = habitDto.Name,
+            UserId = userId
+        };
+
+        _context.Habits.Add(habit);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetHabit), new { id = habit.Id }, habit);
+    }
 } 
