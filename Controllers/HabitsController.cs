@@ -121,4 +121,20 @@ public class HabitsController : ControllerBase
 
         return CreatedAtAction(nameof(GetHabit), new { id = habitId }, entry);
     }
+
+    [HttpGet("{habitId}/entries")]
+    public async Task<ActionResult<List<HabitEntry>>> GetHabitEntries(int habitId)
+    {
+        var userId = GetCurrentUserId();
+        var habit = await _context.Habits
+            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId);
+
+        if (habit == null)
+            return NotFound("Habit not found");
+
+        return await _context.HabitEntries
+            .Where(he => he.HabitId == habitId)
+            .OrderBy(he => he.Date)
+            .ToListAsync();
+    }
 } 
