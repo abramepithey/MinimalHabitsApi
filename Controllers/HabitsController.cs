@@ -98,4 +98,27 @@ public class HabitsController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpPost("{habitId}/entries")]
+    public async Task<ActionResult<HabitEntry>> AddHabitEntry(int habitId, HabitEntryDto entryDto)
+    {
+        var userId = GetCurrentUserId();
+        var habit = await _context.Habits
+            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId);
+
+        if (habit == null)
+            return NotFound("Habit not found");
+
+        var entry = new HabitEntry
+        {
+            Date = entryDto.Date,
+            Completed = entryDto.Completed,
+            HabitId = habitId
+        };
+
+        _context.HabitEntries.Add(entry);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetHabit), new { id = habitId }, entry);
+    }
 } 
