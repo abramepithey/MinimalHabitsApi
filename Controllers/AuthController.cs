@@ -23,9 +23,9 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<User>> Register(RegisterDto registerDto)
+    public async Task<ActionResult<User>> Register(RegisterDto registerDto, CancellationToken cancellationToken = default)
     {
-        if (await _context.Users.AnyAsync(u => u.Username == registerDto.Username))
+        if (await _context.Users.AnyAsync(u => u.Username == registerDto.Username, cancellationToken))
             return BadRequest("Username is already taken");
 
         _authService.CreatePasswordHash(registerDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -37,23 +37,23 @@ public class AuthController : ControllerBase
             PasswordSalt = passwordSalt
         };
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        await _context.Users.AddAsync(user, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
         return Ok(user);
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login(LoginDto loginDto)
+    public async Task<ActionResult<string>> Login(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == loginDto.Username);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == loginDto.Username, cancellationToken);
         if (user == null)
             return Unauthorized("Invalid username");
 
         if (!_authService.VerifyPasswordHash(loginDto.Password, user.PasswordHash, user.PasswordSalt))
             return Unauthorized("Invalid password");
 
-        var token = _authService.CreateToken(user);
+        var token = await _authService.CreateTokenAsync(user, cancellationToken);
         return Ok(token);
     }
 } 

@@ -14,7 +14,7 @@ public class HabitService
         _context = context;
     }
 
-    public async Task<Habit> CreateHabitAsync(int userId, HabitDto habitDto)
+    public async Task<Habit> CreateHabitAsync(int userId, HabitDto habitDto, CancellationToken cancellationToken = default)
     {
         var habit = new Habit
         {
@@ -22,56 +22,56 @@ public class HabitService
             UserId = userId
         };
 
-        _context.Habits.Add(habit);
-        await _context.SaveChangesAsync();
+        await _context.Habits.AddAsync(habit, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
         return habit;
     }
 
-    public async Task<List<Habit>> GetUserHabitsAsync(int userId)
+    public async Task<List<Habit>> GetUserHabitsAsync(int userId, CancellationToken cancellationToken = default)
     {
         return await _context.Habits
             .Where(h => h.UserId == userId)
             .Include(h => h.Entries)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
-    public async Task<Habit?> GetHabitAsync(int userId, int habitId)
+    public async Task<Habit?> GetHabitAsync(int userId, int habitId, CancellationToken cancellationToken = default)
     {
         return await _context.Habits
             .Include(h => h.Entries)
-            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId);
+            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId, cancellationToken);
     }
 
-    public async Task<bool> UpdateHabitAsync(int userId, int habitId, HabitDto habitDto)
+    public async Task<bool> UpdateHabitAsync(int userId, int habitId, HabitDto habitDto, CancellationToken cancellationToken = default)
     {
         var habit = await _context.Habits
-            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId);
+            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId, cancellationToken);
 
         if (habit == null)
             return false;
 
         habit.Name = habitDto.Name;
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
 
-    public async Task<bool> DeleteHabitAsync(int userId, int habitId)
+    public async Task<bool> DeleteHabitAsync(int userId, int habitId, CancellationToken cancellationToken = default)
     {
         var habit = await _context.Habits
-            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId);
+            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId, cancellationToken);
 
         if (habit == null)
             return false;
 
         _context.Habits.Remove(habit);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
 
-    public async Task<HabitEntry?> AddHabitEntryAsync(int userId, int habitId, HabitEntryDto entryDto)
+    public async Task<HabitEntry?> AddHabitEntryAsync(int userId, int habitId, HabitEntryDto entryDto, CancellationToken cancellationToken = default)
     {
         var habit = await _context.Habits
-            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId);
+            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId, cancellationToken);
 
         if (habit == null)
             return null;
@@ -83,15 +83,15 @@ public class HabitService
             HabitId = habitId
         };
 
-        _context.HabitEntries.Add(entry);
-        await _context.SaveChangesAsync();
+        await _context.HabitEntries.AddAsync(entry, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
         return entry;
     }
 
-    public async Task<List<HabitEntry>> GetHabitEntriesAsync(int userId, int habitId)
+    public async Task<List<HabitEntry>> GetHabitEntriesAsync(int userId, int habitId, CancellationToken cancellationToken = default)
     {
         var habit = await _context.Habits
-            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId);
+            .FirstOrDefaultAsync(h => h.Id == habitId && h.UserId == userId, cancellationToken);
 
         if (habit == null)
             return new List<HabitEntry>();
@@ -99,6 +99,6 @@ public class HabitService
         return await _context.HabitEntries
             .Where(he => he.HabitId == habitId)
             .OrderBy(he => he.Date)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 } 

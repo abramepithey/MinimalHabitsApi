@@ -30,7 +30,7 @@ public class AuthService
         return computedHash.SequenceEqual(passwordHash);
     }
 
-    public string CreateToken(User user)
+    public Task<string> CreateTokenAsync(User user, CancellationToken cancellationToken = default)
     {
         var claims = new List<Claim>
         {
@@ -52,6 +52,6 @@ public class AuthService
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        return Task.FromResult(tokenHandler.WriteToken(token));
     }
 } 
