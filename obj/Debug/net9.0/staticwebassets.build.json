@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "7Ufsca7TZ+Kl0ICTSPn0Yzp+NtdaJflWsimXCG1pTE4=",
-  "Source": "MinimalApi",
-  "BasePath": "_content/MinimalApi",
+  "Hash": "kGdMvl8b/mkZ9+e2f7Q2LwmB25ItaxQhE4UfKnPUiIE=",
+  "Source": "MinimalHabitsApi",
+  "BasePath": "_content/MinimalHabitsApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

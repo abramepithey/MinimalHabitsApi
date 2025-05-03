@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MinimalApi.Data;
+using MinimalHabitsApi.Data;
 
 #nullable disable
 
-namespace MinimalApi.Migrations
+namespace MinimalHabitsApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250502145214_InitialCreate")]
+    [Migration("20250503140650_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace MinimalApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
 
-            modelBuilder.Entity("MinimalApi.Models.Habit", b =>
+            modelBuilder.Entity("MinimalHabitsApi.Models.Habit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace MinimalApi.Migrations
                     b.ToTable("Habits");
                 });
 
-            modelBuilder.Entity("MinimalApi.Models.HabitEntry", b =>
+            modelBuilder.Entity("MinimalHabitsApi.Models.HabitEntry", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +63,7 @@ namespace MinimalApi.Migrations
                     b.ToTable("HabitEntries");
                 });
 
-            modelBuilder.Entity("MinimalApi.Models.User", b =>
+            modelBuilder.Entity("MinimalHabitsApi.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,9 +89,9 @@ namespace MinimalApi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MinimalApi.Models.Habit", b =>
+            modelBuilder.Entity("MinimalHabitsApi.Models.Habit", b =>
                 {
-                    b.HasOne("MinimalApi.Models.User", "User")
+                    b.HasOne("MinimalHabitsApi.Models.User", "User")
                         .WithMany("Habits")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -100,9 +100,9 @@ namespace MinimalApi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MinimalApi.Models.HabitEntry", b =>
+            modelBuilder.Entity("MinimalHabitsApi.Models.HabitEntry", b =>
                 {
-                    b.HasOne("MinimalApi.Models.Habit", "Habit")
+                    b.HasOne("MinimalHabitsApi.Models.Habit", "Habit")
                         .WithMany("Entries")
                         .HasForeignKey("HabitId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -111,12 +111,12 @@ namespace MinimalApi.Migrations
                     b.Navigation("Habit");
                 });
 
-            modelBuilder.Entity("MinimalApi.Models.Habit", b =>
+            modelBuilder.Entity("MinimalHabitsApi.Models.Habit", b =>
                 {
                     b.Navigation("Entries");
                 });
 
-            modelBuilder.Entity("MinimalApi.Models.User", b =>
+            modelBuilder.Entity("MinimalHabitsApi.Models.User", b =>
                 {
                     b.Navigation("Habits");
                 });

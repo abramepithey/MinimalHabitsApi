@@ -3876,11 +3876,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/abrampithey/MinimalApi/MinimalApi.csproj",
-      "projectName": "MinimalApi",
-      "projectPath": "/Users/abrampithey/MinimalApi/MinimalApi.csproj",
+      "projectUniqueName": "/Users/abrampithey/MinimalHabitsApi/MinimalHabitsApi.csproj",
+      "projectName": "MinimalHabitsApi",
+      "projectPath": "/Users/abrampithey/MinimalHabitsApi/MinimalHabitsApi.csproj",
       "packagesPath": "/Users/abrampithey/.nuget/packages/",
-      "outputPath": "/Users/abrampithey/MinimalApi/obj/",
+      "outputPath": "/Users/abrampithey/MinimalHabitsApi/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/abrampithey/.nuget/NuGet/NuGet.Config"

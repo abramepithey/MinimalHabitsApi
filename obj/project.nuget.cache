@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RU3qxTCLPTI=",
+  "dgSpecHash": "FfSe4gh9qlk=",
   "success": true,
-  "projectFilePath": "/Users/abrampithey/MinimalApi/MinimalApi.csproj",
+  "projectFilePath": "/Users/abrampithey/MinimalHabitsApi/MinimalHabitsApi.csproj",
   "expectedPackageFiles": [
     "/Users/abrampithey/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/abrampithey/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/9.0.4/microsoft.aspnetcore.authentication.jwtbearer.9.0.4.nupkg.sha512",

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/MinimalHabitsApi.props" />
+</Project>

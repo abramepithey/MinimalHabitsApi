@@ -1,4 +1,4 @@
-namespace MinimalApi.Models;
+namespace MinimalHabitsApi.Models;
 
 public class User
 {
