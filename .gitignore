@@ -1,0 +1,60 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code settings
+.vscode/
+
+# Rider settings
+.idea/
+
+# ASP.NET Core secrets
+**/appsettings.Development.json
+**/appsettings.Local.json
+secrets.json
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+# Entity Framework Migrations snapshot
+**/Migrations/*ModelSnapshot.cs
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+~$*
+
+# Dotnet tools
+.dotnet-tools/
+
+# Test Results
+TestResults/
+
+# Coverage reports
+coverage/
+*.coverage
+*.coveragexml
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+
+# Auto-generated files
+Generated_Code/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
