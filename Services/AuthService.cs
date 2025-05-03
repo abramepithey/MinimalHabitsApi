@@ -10,10 +10,13 @@ namespace MinimalHabitsApi.Services;
 public class AuthService
 {
     private readonly IConfiguration _configuration;
+    private readonly SymmetricSecurityKey _key;
 
     public AuthService(IConfiguration configuration)
     {
         _configuration = configuration;
+        var keyBytes = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+        _key = new SymmetricSecurityKey(keyBytes);
     }
 
     public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -38,13 +41,12 @@ public class AuthService
             new Claim(ClaimTypes.Name, user.Username)
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+        var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.Now.AddDays(1),
+            Expires = DateTime.UtcNow.AddDays(1),
             SigningCredentials = creds,
             Issuer = _configuration["Jwt:Issuer"],
             Audience = _configuration["Jwt:Audience"]
