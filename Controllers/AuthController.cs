@@ -44,7 +44,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login(LoginDto loginDto, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<object>> Login(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == loginDto.Username, cancellationToken);
         if (user == null)
@@ -54,6 +54,6 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid password");
 
         var token = await _authService.CreateTokenAsync(user, cancellationToken);
-        return Ok(token);
+        return Ok(new { token });
     }
 } 
