@@ -22,7 +22,15 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
+    /// <summary>
+    /// Registers a new user.
+    /// </summary>
+    /// <param name="registerDto">The registration data.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The created user.</returns>
     [HttpPost("register")]
+    [ProducesResponseType(typeof(User), 200)]
+    [ProducesResponseType(400)]
     public async Task<ActionResult<User>> Register(RegisterDto registerDto, CancellationToken cancellationToken = default)
     {
         if (await _context.Users.AnyAsync(u => u.Username == registerDto.Username, cancellationToken))
@@ -43,7 +51,15 @@ public class AuthController : ControllerBase
         return Ok(user);
     }
 
+    /// <summary>
+    /// Authenticates a user and returns a JWT token.
+    /// </summary>
+    /// <param name="loginDto">The login credentials.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A JWT token if successful.</returns>
     [HttpPost("login")]
+    [ProducesResponseType(typeof(object), 200)]
+    [ProducesResponseType(401)]
     public async Task<ActionResult<object>> Login(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == loginDto.Username, cancellationToken);

@@ -29,7 +29,15 @@ public class HabitsController : ControllerBase
         return int.Parse(userIdClaim.Value);
     }
 
+    /// <summary>
+    /// Creates a new habit for the current user.
+    /// </summary>
+    /// <param name="habitDto">The habit data.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The created habit.</returns>
     [HttpPost]
+    [ProducesResponseType(typeof(Habit), 201)]
+    [ProducesResponseType(401)]
     public async Task<ActionResult<Habit>> CreateHabit(HabitDto habitDto, CancellationToken cancellationToken = default)
     {
         var userId = GetCurrentUserId();
@@ -37,14 +45,30 @@ public class HabitsController : ControllerBase
         return CreatedAtAction(nameof(GetHabit), new { id = habit.Id }, habit);
     }
 
+    /// <summary>
+    /// Gets all habits for the current user.
+    /// </summary>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A list of habits.</returns>
     [HttpGet]
+    [ProducesResponseType(typeof(List<Habit>), 200)]
+    [ProducesResponseType(401)]
     public async Task<ActionResult<List<Habit>>> GetHabits(CancellationToken cancellationToken = default)
     {
         var userId = GetCurrentUserId();
         return await _habitService.GetUserHabitsAsync(userId, cancellationToken);
     }
 
+    /// <summary>
+    /// Gets a specific habit by ID for the current user.
+    /// </summary>
+    /// <param name="id">The habit ID.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The habit if found.</returns>
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(Habit), 200)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
     public async Task<ActionResult<Habit>> GetHabit(int id, CancellationToken cancellationToken = default)
     {
         var userId = GetCurrentUserId();
@@ -54,7 +78,17 @@ public class HabitsController : ControllerBase
         return habit;
     }
 
+    /// <summary>
+    /// Updates a specific habit for the current user.
+    /// </summary>
+    /// <param name="id">The habit ID.</param>
+    /// <param name="habitDto">The updated habit data.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>No content if successful.</returns>
     [HttpPut("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
     public async Task<IActionResult> UpdateHabit(int id, HabitDto habitDto, CancellationToken cancellationToken = default)
     {
         var userId = GetCurrentUserId();
@@ -64,7 +98,16 @@ public class HabitsController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Deletes a specific habit for the current user.
+    /// </summary>
+    /// <param name="id">The habit ID.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>No content if successful.</returns>
     [HttpDelete("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
     public async Task<IActionResult> DeleteHabit(int id, CancellationToken cancellationToken = default)
     {
         var userId = GetCurrentUserId();
@@ -74,7 +117,17 @@ public class HabitsController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Adds a new entry to a specific habit for the current user.
+    /// </summary>
+    /// <param name="habitId">The habit ID.</param>
+    /// <param name="entryDto">The entry data.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The created entry.</returns>
     [HttpPost("{habitId}/entries")]
+    [ProducesResponseType(typeof(HabitEntry), 201)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
     public async Task<ActionResult<HabitEntry>> AddHabitEntry(int habitId, HabitEntryDto entryDto, CancellationToken cancellationToken = default)
     {
         var userId = GetCurrentUserId();
@@ -84,7 +137,16 @@ public class HabitsController : ControllerBase
         return CreatedAtAction(nameof(GetHabit), new { id = habitId }, entry);
     }
 
+    /// <summary>
+    /// Gets all entries for a specific habit for the current user.
+    /// </summary>
+    /// <param name="habitId">The habit ID.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A list of entries.</returns>
     [HttpGet("{habitId}/entries")]
+    [ProducesResponseType(typeof(List<HabitEntry>), 200)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
     public async Task<ActionResult<List<HabitEntry>>> GetHabitEntries(int habitId, CancellationToken cancellationToken = default)
     {
         var userId = GetCurrentUserId();
