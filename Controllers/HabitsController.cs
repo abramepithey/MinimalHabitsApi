@@ -9,6 +9,9 @@ using System.Security.Claims;
 
 namespace MinimalHabitsApi.Controllers;
 
+/// <summary>
+/// Controller for managing user habits and habit entries.
+/// </summary>
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
@@ -16,6 +19,10 @@ public class HabitsController : ControllerBase
 {
     private readonly HabitService _habitService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HabitsController"/> class.
+    /// </summary>
+    /// <param name="habitService">The habit service.</param>
     public HabitsController(HabitService habitService)
     {
         _habitService = habitService;

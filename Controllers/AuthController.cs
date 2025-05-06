@@ -9,6 +9,9 @@ using System.Security.Claims;
 
 namespace MinimalHabitsApi.Controllers;
 
+/// <summary>
+/// Controller for handling user authentication operations.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
@@ -16,6 +19,11 @@ public class AuthController : ControllerBase
     private readonly ApplicationDbContext _context;
     private readonly AuthService _authService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AuthController"/> class.
+    /// </summary>
+    /// <param name="context">The database context.</param>
+    /// <param name="authService">The authentication service.</param>
     public AuthController(ApplicationDbContext context, AuthService authService)
     {
         _context = context;
