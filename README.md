@@ -1,4 +1,4 @@
-# HabitTrackerAPI
+# MinimalHabitsAPI
 
 A clean, scalable .NET 9 Web API for tracking user habits, featuring full CRUD functionality, user authentication, and proper architectural separation (Controllers, Services, Models).
 
@@ -31,4 +31,4 @@ Endpoints are organized around REST conventions. A Swagger UI is available at `/
 
 ## Status
 
-Actively maintained and paired with a Blazor WebAssembly frontend: [HabitTrackerBlazor](https://github.com/abramepithey/MinimalHabitsBlazor)
+Actively maintained and paired with a Blazor WebAssembly frontend: [MinimalHabitsBlazor](https://github.com/abramepithey/MinimalHabitsBlazor)
